@@ -1,0 +1,6 @@
+﻿@{
+    if (!WebSecurity.Initialized)
+    {
+        WebSecurity.InitializeDatabaseConnection("defaultConnection", "Users", "Id", "Email", true);
+    }
+}

@@ -1,0 +1,37 @@
+﻿@model StatCoach.Models.UsersModel
+@using StatCoach.Models;
+@{
+    ViewBag.Title = "Index";
+}
+
+@Html.ValidationSummary()
+
+<table border="1">
+    <thead>
+        <tr>
+            <th>E-Post</th>
+            <th>Förnamn</th>
+            <th>Efternamn</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (UserModel user in Model.Users)
+        {
+            <tr>
+                <td>
+                    @user.Email
+                </td>
+                <td>
+                    @user.FirstName
+                </td>
+                <td>
+                    @user.LastName
+                </td>
+                <td>
+                    @Html.ActionLink("Ta bort", "Delete", new { Id = user.Id})
+                </td>
+            </tr>
+        }        
+    </tbody>
+</table>
+

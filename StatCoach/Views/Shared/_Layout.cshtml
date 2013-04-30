@@ -1,0 +1,20 @@
+﻿@using StatCoach.Helpers;
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>_Layout</title>
+</head>
+<body>
+    Inloggad: @Html.CurrentUserDisplayName()<br />
+    @Html.ActionLink("Logga ut", "Logout", "Account")
+    <div>
+        @RenderBody()
+    </div>
+</body>
+</html>
