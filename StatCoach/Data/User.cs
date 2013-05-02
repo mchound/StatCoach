@@ -17,6 +17,7 @@ namespace StatCoach.Data
         public User()
         {
             this.webpages_Roles = new HashSet<webpages_Roles>();
+            this.Clubs = new HashSet<Club>();
         }
     
         public int Id { get; set; }
@@ -26,5 +27,6 @@ namespace StatCoach.Data
         public Nullable<System.DateTime> StartDate { get; set; }
     
         public virtual ICollection<webpages_Roles> webpages_Roles { get; set; }
+        public virtual ICollection<Club> Clubs { get; set; }
     }
 }

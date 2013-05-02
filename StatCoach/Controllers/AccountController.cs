@@ -6,6 +6,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
 using WebMatrix.WebData;
+using StatCoach.Data;
 
 namespace StatCoach.Controllers
 {
@@ -19,7 +20,17 @@ namespace StatCoach.Controllers
                 WebSecurity.InitializeDatabaseConnection("defaultConnection", "Users", "Id", "Email", true);
             }
 
-            return View();
+            RegisterModel model;
+            
+            using (StatsRepository db = new StatsRepository())
+            {
+                model = new RegisterModel
+                {
+                    Clubs = db.GetClubListItems()
+                };
+            }
+
+            return View(model);
         }
 
         [HttpPost]

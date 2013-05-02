@@ -1,11 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Schema Namespace="dbStatCoachModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
   <EntityContainer Name="dbStatCoachModelStoreContainer">
+    <EntitySet Name="Clubs" EntityType="dbStatCoachModel.Store.Clubs" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Users" EntityType="dbStatCoachModel.Store.Users" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="webpages_Membership" EntityType="dbStatCoachModel.Store.webpages_Membership" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="webpages_OAuthMembership" EntityType="dbStatCoachModel.Store.webpages_OAuthMembership" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="webpages_Roles" EntityType="dbStatCoachModel.Store.webpages_Roles" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="webpages_UsersInRoles" EntityType="dbStatCoachModel.Store.webpages_UsersInRoles" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="FK_Clubs_Users" Association="dbStatCoachModel.Store.FK_Clubs_Users">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="Clubs" EntitySet="Clubs" />
+    </AssociationSet>
     <AssociationSet Name="fk_RoleId" Association="dbStatCoachModel.Store.fk_RoleId">
       <End Role="webpages_Roles" EntitySet="webpages_Roles" />
       <End Role="webpages_UsersInRoles" EntitySet="webpages_UsersInRoles" />
@@ -15,13 +20,21 @@
       <End Role="webpages_UsersInRoles" EntitySet="webpages_UsersInRoles" />
     </AssociationSet>
   </EntityContainer>
+  <EntityType Name="Clubs">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="Name" Type="varchar" Nullable="false" MaxLength="50" />
+    <Property Name="CreatedBy" Type="int" />
+  </EntityType>
   <EntityType Name="Users">
     <Key>
       <PropertyRef Name="Id" />
     </Key>
     <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
     <Property Name="Email" Type="varchar" Nullable="false" MaxLength="50" />
-    <Property Name="FirstName" Type="varchar" Nullable="false" MaxLength="50" />
+    <Property Name="FirstName" Type="varchar" MaxLength="50" />
     <Property Name="LastName" Type="varchar" MaxLength="50" />
     <Property Name="StartDate" Type="datetime" />
   </EntityType>
@@ -65,6 +78,18 @@
     <Property Name="UserId" Type="int" Nullable="false" />
     <Property Name="RoleId" Type="int" Nullable="false" />
   </EntityType>
+  <Association Name="FK_Clubs_Users">
+    <End Role="Users" Type="dbStatCoachModel.Store.Users" Multiplicity="0..1" />
+    <End Role="Clubs" Type="dbStatCoachModel.Store.Clubs" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Clubs">
+        <PropertyRef Name="CreatedBy" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="fk_RoleId">
     <End Role="webpages_Roles" Type="dbStatCoachModel.Store.webpages_Roles" Multiplicity="1" />
     <End Role="webpages_UsersInRoles" Type="dbStatCoachModel.Store.webpages_UsersInRoles" Multiplicity="*" />

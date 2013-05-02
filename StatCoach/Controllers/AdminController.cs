@@ -20,7 +20,7 @@ namespace StatCoach.Controllers
             using(UserRepository users = new UserRepository())
             {
                 UserModel currentUser = users.GetCurrentUser();
-                if (id == currentUser.Id)
+                if (currentUser != null && id == currentUser.Id)
                 {
                     ModelState.AddModelError("UserLoggenOn", "Det går inte att ta bort en inloggad användare");
                     return View("~/Views/Admin/Index.cshtml", new UsersModel());

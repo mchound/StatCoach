@@ -9,6 +9,11 @@
       <End Role="webpages_Roles" EntitySet="webpages_Roles" />
       <End Role="Users" EntitySet="Users" />
     </AssociationSet>
+    <EntitySet Name="Clubs" EntityType="dbStatCoachModel.Club" />
+    <AssociationSet Name="FK_Clubs_Users" Association="dbStatCoachModel.FK_Clubs_Users">
+      <End Role="User" EntitySet="Users" />
+      <End Role="Club" EntitySet="Clubs" />
+    </AssociationSet>
   </EntityContainer>
   <EntityType Name="User">
     <Key>
@@ -16,10 +21,11 @@
     </Key>
     <Property Name="Id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
     <Property Name="Email" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
-    <Property Name="FirstName" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+    <Property Name="FirstName" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
     <Property Name="LastName" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
     <Property Name="StartDate" Type="DateTime" Precision="3" />
     <NavigationProperty Name="webpages_Roles" Relationship="dbStatCoachModel.webpages_UsersInRoles" FromRole="Users" ToRole="webpages_Roles" />
+    <NavigationProperty Name="Clubs" Relationship="dbStatCoachModel.FK_Clubs_Users" FromRole="User" ToRole="Club" />
   </EntityType>
   <EntityType Name="webpages_Membership">
     <Key>
@@ -57,5 +63,26 @@
   <Association Name="webpages_UsersInRoles">
     <End Role="webpages_Roles" Type="dbStatCoachModel.webpages_Roles" Multiplicity="*" />
     <End Role="Users" Type="dbStatCoachModel.User" Multiplicity="*" />
+  </Association>
+  <EntityType Name="Club">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Type="Guid" Name="Id" Nullable="false" />
+    <Property Type="String" Name="Name" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Type="Int32" Name="CreatedBy" />
+    <NavigationProperty Name="User" Relationship="dbStatCoachModel.FK_Clubs_Users" FromRole="Club" ToRole="User" />
+  </EntityType>
+  <Association Name="FK_Clubs_Users">
+    <End Type="dbStatCoachModel.User" Role="User" Multiplicity="0..1" />
+    <End Type="dbStatCoachModel.Club" Role="Club" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Club">
+        <PropertyRef Name="CreatedBy" />
+      </Dependent>
+    </ReferentialConstraint>
   </Association>
 </Schema>

@@ -9,10 +9,17 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>_Layout</title>
+    <link href="~/Static/Styles.min.css" rel="stylesheet" />
 </head>
 <body>
     Inloggad: @Html.CurrentUserDisplayName()<br />
-    @Html.ActionLink("Logga ut", "Logout", "Account")
+    <ul class="nav">
+        <li>@Html.ActionLink("Registrera", "Register", "Account")</li>
+        <li>@Html.ActionLink("Logga in", "Login", "Account")</li>
+        <li>@Html.ActionLink("Admin", "Index", "Admin")</li>
+        <li>@Html.ActionLink("Logga ut", "Logout", "Account")</li>
+    </ul>
+    
     <div>
         @RenderBody()
     </div>

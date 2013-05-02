@@ -21,7 +21,7 @@ namespace StatCoach.Models
         public string LastName { get; set; }
 
         [Required]
-        [StringLength(6, ErrorMessage = "Lösenordet måste vara minst {2} bokstäver långt", MinimumLength=6)]
+        [StringLength(20, ErrorMessage = "Lösenordet måste vara minst {2} bokstäver långt", MinimumLength=6)]
         [Display(Name = "Lösenord")]
         [DataType(DataType.Password)]
         public string Password { get; set; }
@@ -31,6 +31,13 @@ namespace StatCoach.Models
         [Display(Name = "Bekräfta lösenord")]
         [DataType(DataType.Password)]
         public string ConfirmPassword { get; set; }
+
+        [Required]
+        [Display(Name = "Förening")]
+        public string ClubId { get; set; }
+
+        public IEnumerable<System.Web.Mvc.SelectListItem> Clubs;
+
     }
 
     public class UserModel

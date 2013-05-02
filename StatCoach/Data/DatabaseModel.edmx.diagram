@@ -10,6 +10,8 @@
         <EntityTypeShape EntityType="dbStatCoachModel.webpages_OAuthMembership" Width="1.5" PointX="2.75" PointY="4.75" IsExpanded="true" />
         <EntityTypeShape EntityType="dbStatCoachModel.webpages_Roles" Width="1.5" PointX="0.75" PointY="1.25" IsExpanded="true" />
         <AssociationConnector Association="dbStatCoachModel.webpages_UsersInRoles" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="dbStatCoachModel.Club" Width="1.5" PointX="9" PointY="0.875" />
+        <AssociationConnector Association="dbStatCoachModel.FK_Clubs_Users" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
