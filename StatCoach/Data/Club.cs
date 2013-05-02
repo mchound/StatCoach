@@ -16,7 +16,7 @@ namespace StatCoach.Data
     {
         public System.Guid Id { get; set; }
         public string Name { get; set; }
-        public Nullable<int> CreatedBy { get; set; }
+        public Nullable<int> CreatedByUserId { get; set; }
     
         public virtual User User { get; set; }
     }

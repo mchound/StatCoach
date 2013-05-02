@@ -124,8 +124,23 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Data\azureDataseModel.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>azureDataseModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\azureDataseModel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>azureDataseModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\azureDataseModel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>azureDataseModel.edmx</DependentUpon>
+    </Compile>
     <Compile Include="Data\Club.cs">
-      <DependentUpon>DatabaseModel.tt</DependentUpon>
+      <DependentUpon>azureDataseModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Data\StatsRepository.cs" />
     <Compile Include="Data\DatabaseModel.Context.cs">
@@ -144,17 +159,17 @@
       <DependentUpon>DatabaseModel.edmx</DependentUpon>
     </Compile>
     <Compile Include="Data\User.cs">
-      <DependentUpon>DatabaseModel.tt</DependentUpon>
+      <DependentUpon>azureDataseModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Data\UserRepository.cs" />
     <Compile Include="Data\webpages_Membership.cs">
-      <DependentUpon>DatabaseModel.tt</DependentUpon>
+      <DependentUpon>azureDataseModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Data\webpages_OAuthMembership.cs">
-      <DependentUpon>DatabaseModel.tt</DependentUpon>
+      <DependentUpon>azureDataseModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Data\webpages_Roles.cs">
-      <DependentUpon>DatabaseModel.tt</DependentUpon>
+      <DependentUpon>azureDataseModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -237,6 +252,27 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Static\Styles.less" />
+  </ItemGroup>
+  <ItemGroup>
+    <EntityDeploy Include="Data\azureDataseModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>azureDataseModel.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Data\azureDataseModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>azureDataseModel.edmx</DependentUpon>
+      <LastGenOutput>azureDataseModel.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Data\azureDataseModel.edmx.diagram">
+      <DependentUpon>azureDataseModel.edmx</DependentUpon>
+    </Content>
+    <Content Include="Data\azureDataseModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>azureDataseModel.edmx</DependentUpon>
+      <LastGenOutput>azureDataseModel.cs</LastGenOutput>
+    </Content>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -11,27 +11,27 @@ namespace StatCoach.Data
 {
     public class StatsRepository : IDisposable
     {
-        private dbStatCoachEntities db;
+        private dbStatCoachEntitiesAzure db;
         private System.Web.Caching.Cache cache;
 
         public StatsRepository()
         {
-            this.db = new dbStatCoachEntities();
+            this.db = new dbStatCoachEntitiesAzure();
             this.cache = new System.Web.Caching.Cache();
         }
 
-        public IEnumerable<SelectListItem> GetClubListItems()
+        public List<SelectListItem> GetClubListItems()
         {
             if (HttpContext.Current.Cache["ClucListItems"] == null)
             {
-                HttpContext.Current.Cache["ClucListItems"] = this.db.Clubs.Select(c => new SelectListItem
+                HttpContext.Current.Cache["ClucListItems"] = this.db.Clubs.AsEnumerable<Club>().Select(c => new SelectListItem
                 {
                     Text = c.Name,
                     Value = c.Id.ToString()
-                }).AsEnumerable<SelectListItem>();                
+                }).ToList<SelectListItem>();                
             }
 
-            return (IEnumerable<SelectListItem>)HttpContext.Current.Cache["ClucListItems"];
+            return (List<SelectListItem>)HttpContext.Current.Cache["ClucListItems"];
         }
 
         public void Dispose()

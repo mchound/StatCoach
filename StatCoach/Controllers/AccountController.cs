@@ -26,7 +26,7 @@ namespace StatCoach.Controllers
             {
                 model = new RegisterModel
                 {
-                    Clubs = db.GetClubListItems()
+                    Clubs = db.GetClubListItems().ToList()
                 };
             }
 
@@ -48,6 +48,9 @@ namespace StatCoach.Controllers
                 catch (MembershipCreateUserException e)
                 {
                     ModelState.AddModelError("", ErrorCodeToString(e.StatusCode));
+
+                    StatsRepository db = new StatsRepository();
+                    model.Clubs = db.GetClubListItems();
                 }
             }
 

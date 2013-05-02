@@ -10,11 +10,11 @@ namespace StatCoach.Data
 {
     public class UserRepository : IDisposable
     {
-        private dbStatCoachEntities db;
+        private dbStatCoachEntitiesAzure db;
 
         public UserRepository()
         {
-            this.db = new dbStatCoachEntities();
+            this.db = new dbStatCoachEntitiesAzure();
         }
 
         public UserModel GetCurrentUser()
