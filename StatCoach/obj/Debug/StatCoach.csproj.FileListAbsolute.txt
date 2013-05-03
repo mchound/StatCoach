@@ -57,6 +57,5 @@ C:\gitWorkspace\StatCoach\StatCoach\bin\System.Web.WebPages.Deployment.xml
 C:\gitWorkspace\StatCoach\StatCoach\bin\System.Web.WebPages.Razor.xml
 C:\gitWorkspace\StatCoach\StatCoach\bin\WebMatrix.Data.xml
 C:\gitWorkspace\StatCoach\StatCoach\bin\WebMatrix.WebData.xml
-C:\gitWorkspace\StatCoach\StatCoach\obj\Debug\StatCoach.csprojResolveAssemblyReference.cache
 C:\gitWorkspace\StatCoach\StatCoach\obj\Debug\StatCoach.dll
 C:\gitWorkspace\StatCoach\StatCoach\obj\Debug\StatCoach.pdb

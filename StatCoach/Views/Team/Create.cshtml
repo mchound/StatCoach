@@ -1,0 +1,19 @@
+﻿@model StatCoach.Models.TeamModel
+@{
+    ViewBag.Title = "Create";
+}
+
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary()
+
+    <fieldset>
+        <legend>Registration Form</legend>
+        <ol>
+            <li>
+                @Html.LabelFor(m => m.Name)
+                @Html.TextBoxFor(m => m.Name)
+            </li>
+        </ol>
+        <input type="submit" value="Create" />
+    </fieldset>
+}

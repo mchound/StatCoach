@@ -121,9 +121,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Business\Attributes\EmailAttribute.cs" />
+    <Compile Include="Business\Enums\CRUDStatus.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
+    <Compile Include="Controllers\ClubController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\TeamController.cs" />
     <Compile Include="Data\azureDataseModel.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -142,21 +145,12 @@
     <Compile Include="Data\Club.cs">
       <DependentUpon>azureDataseModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Data\ContentRight.cs">
+      <DependentUpon>azureDataseModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Data\StatsRepository.cs" />
-    <Compile Include="Data\DatabaseModel.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>DatabaseModel.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Data\DatabaseModel.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>DatabaseModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Data\DatabaseModel.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>DatabaseModel.edmx</DependentUpon>
+    <Compile Include="Data\Team.cs">
+      <DependentUpon>azureDataseModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Data\User.cs">
       <DependentUpon>azureDataseModel.tt</DependentUpon>
@@ -177,6 +171,7 @@
     <Compile Include="Helpers\HtmlHelpers.cs" />
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\AdminModels.cs" />
+    <Compile Include="Models\TeamModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -230,27 +225,6 @@
     <Content Include="Views\Admin\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <EntityDeploy Include="Data\DatabaseModel.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>DatabaseModel.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Data\DatabaseModel.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>DatabaseModel.edmx</DependentUpon>
-      <LastGenOutput>DatabaseModel.Context.cs</LastGenOutput>
-    </Content>
-    <Content Include="Data\DatabaseModel.edmx.diagram">
-      <DependentUpon>DatabaseModel.edmx</DependentUpon>
-    </Content>
-    <Content Include="Data\DatabaseModel.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>DatabaseModel.edmx</DependentUpon>
-      <LastGenOutput>DatabaseModel.cs</LastGenOutput>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Static\Styles.less" />
   </ItemGroup>
   <ItemGroup>
@@ -273,6 +247,15 @@
       <DependentUpon>azureDataseModel.edmx</DependentUpon>
       <LastGenOutput>azureDataseModel.cs</LastGenOutput>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Team\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Team\Create.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Club\Index.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -18,14 +18,17 @@ namespace StatCoach.Data
         {
             this.Clubs = new HashSet<Club>();
             this.webpages_Roles = new HashSet<webpages_Roles>();
+            this.Teams = new HashSet<Team>();
         }
     
         public int Id { get; set; }
         public string Email { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        public Nullable<int> ClubId { get; set; }
     
         public virtual ICollection<Club> Clubs { get; set; }
         public virtual ICollection<webpages_Roles> webpages_Roles { get; set; }
+        public virtual ICollection<Team> Teams { get; set; }
     }
 }

@@ -4,9 +4,11 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="dbStatCoachModel1.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="dbStatCoachModel1.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityContainer Name="dbStatCoachModel1StoreContainer">
           <EntitySet Name="Clubs" EntityType="dbStatCoachModel1.Store.Clubs" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="ContentRights" EntityType="dbStatCoachModel1.Store.ContentRights" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Teams" EntityType="dbStatCoachModel1.Store.Teams" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Users" EntityType="dbStatCoachModel1.Store.Users" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="webpages_Membership" EntityType="dbStatCoachModel1.Store.webpages_Membership" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="webpages_OAuthMembership" EntityType="dbStatCoachModel1.Store.webpages_OAuthMembership" store:Type="Tables" Schema="dbo" />
@@ -19,6 +21,10 @@
           <AssociationSet Name="fk_RoleId" Association="dbStatCoachModel1.Store.fk_RoleId">
             <End Role="webpages_Roles" EntitySet="webpages_Roles" />
             <End Role="webpages_UsersInRoles" EntitySet="webpages_UsersInRoles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Teams_Users" Association="dbStatCoachModel1.Store.FK_Teams_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Teams" EntitySet="Teams" />
           </AssociationSet>
           <AssociationSet Name="fk_UserId" Association="dbStatCoachModel1.Store.fk_UserId">
             <End Role="Users" EntitySet="Users" />
@@ -33,6 +39,25 @@
           <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="50" />
           <Property Name="CreatedByUserId" Type="int" />
         </EntityType>
+        <EntityType Name="ContentRights">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="ContentId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Type" Type="int" Nullable="false" />
+          <Property Name="RoleId" Type="int" Nullable="false" />
+          <Property Name="Level" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Teams">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Name" Type="nchar" Nullable="false" MaxLength="50" />
+          <Property Name="CreatedByUserId" Type="int" />
+          <Property Name="RootRoleName" Type="nvarchar" MaxLength="256" />
+        </EntityType>
         <EntityType Name="Users">
           <Key>
             <PropertyRef Name="Id" />
@@ -41,6 +66,7 @@
           <Property Name="Email" Type="nvarchar" Nullable="false" MaxLength="50" />
           <Property Name="FirstName" Type="nvarchar" MaxLength="50" />
           <Property Name="LastName" Type="nvarchar" MaxLength="50" />
+          <Property Name="ClubId" Type="int" />
         </EntityType>
         <EntityType Name="webpages_Membership">
           <Key>
@@ -67,6 +93,9 @@
           <Property Name="ProviderUserId" Type="nvarchar" Nullable="false" MaxLength="100" />
           <Property Name="UserId" Type="int" Nullable="false" />
         </EntityType>
+        <!--Errors Found During Generation:
+      warning 6035: The relationship 'FK_Teams_Roles' has columns that are not part of the key of the table on the primary side of the relationship. The relationship was excluded.
+      -->
         <EntityType Name="webpages_Roles">
           <Key>
             <PropertyRef Name="RoleId" />
@@ -108,6 +137,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Teams_Users">
+          <End Role="Users" Type="dbStatCoachModel1.Store.Users" Multiplicity="0..1" />
+          <End Role="Teams" Type="dbStatCoachModel1.Store.Teams" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Teams">
+              <PropertyRef Name="CreatedByUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="fk_UserId">
           <End Role="Users" Type="dbStatCoachModel1.Store.Users" Multiplicity="1" />
           <End Role="webpages_UsersInRoles" Type="dbStatCoachModel1.Store.webpages_UsersInRoles" Multiplicity="*" />
@@ -120,8 +161,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="dbStatCoachModel1" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -139,6 +179,12 @@
             <End Role="webpages_Roles" EntitySet="webpages_Roles" />
             <End Role="Users" EntitySet="Users" />
           </AssociationSet>
+          <EntitySet Name="Teams" EntityType="dbStatCoachModel1.Team" />
+          <AssociationSet Name="FK_Teams_Users" Association="dbStatCoachModel1.FK_Teams_Users">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Team" EntitySet="Teams" />
+          </AssociationSet>
+          <EntitySet Name="ContentRights" EntityType="dbStatCoachModel1.ContentRight" />
         </EntityContainer>
         <EntityType Name="Club">
           <Key>
@@ -159,6 +205,8 @@
           <Property Name="LastName" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
           <NavigationProperty Name="Clubs" Relationship="dbStatCoachModel1.FK_Clubs_Users" FromRole="Users" ToRole="Clubs" />
           <NavigationProperty Name="webpages_Roles" Relationship="dbStatCoachModel1.webpages_UsersInRoles" FromRole="Users" ToRole="webpages_Roles" />
+          <Property Type="Int32" Name="ClubId" />
+          <NavigationProperty Name="Teams" Relationship="dbStatCoachModel1.FK_Teams_Users" FromRole="User" ToRole="Team" />
         </EntityType>
         <EntityType Name="webpages_Membership">
           <Key>
@@ -211,6 +259,38 @@
           <End Role="webpages_Roles" Type="dbStatCoachModel1.webpages_Roles" Multiplicity="*" />
           <End Role="Users" Type="dbStatCoachModel1.User" Multiplicity="*" />
         </Association>
+        <EntityType Name="Team">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Guid" Name="Id" Nullable="false" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="50" FixedLength="true" Unicode="true" />
+          <Property Type="Int32" Name="CreatedByUserId" />
+          <NavigationProperty Name="User" Relationship="dbStatCoachModel1.FK_Teams_Users" FromRole="Team" ToRole="User" />
+          <Property Type="String" Name="RootRoleName" MaxLength="256" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <Association Name="FK_Teams_Users">
+          <End Type="dbStatCoachModel1.User" Role="User" Multiplicity="0..1" />
+          <End Type="dbStatCoachModel1.Team" Role="Team" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Team">
+              <PropertyRef Name="CreatedByUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="ContentRight">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Guid" Name="Id" Nullable="false" />
+          <Property Type="Guid" Name="ContentId" Nullable="false" />
+          <Property Type="Int32" Name="Type" Nullable="false" />
+          <Property Type="Int32" Name="RoleId" Nullable="false" />
+          <Property Type="Int32" Name="Level" Nullable="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -229,6 +309,7 @@
           <EntitySetMapping Name="Users">
             <EntityTypeMapping TypeName="dbStatCoachModel1.User">
               <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="ClubId" ColumnName="ClubId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Email" ColumnName="Email" />
                 <ScalarProperty Name="FirstName" ColumnName="FirstName" />
@@ -278,6 +359,27 @@
               <ScalarProperty Name="Id" ColumnName="UserId" />
             </EndProperty>
           </AssociationSetMapping>
+          <EntitySetMapping Name="Teams">
+            <EntityTypeMapping TypeName="dbStatCoachModel1.Team">
+              <MappingFragment StoreEntitySet="Teams">
+                <ScalarProperty Name="RootRoleName" ColumnName="RootRoleName" />
+                <ScalarProperty Name="CreatedByUserId" ColumnName="CreatedByUserId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ContentRights">
+            <EntityTypeMapping TypeName="dbStatCoachModel1.ContentRight">
+              <MappingFragment StoreEntitySet="ContentRights">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Level" ColumnName="Level" />
+                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="ContentId" ColumnName="ContentId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
