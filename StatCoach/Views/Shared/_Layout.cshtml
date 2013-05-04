@@ -15,11 +15,14 @@
     Inloggad: @Html.CurrentUserDisplayName()<br />
     <ul class="nav">
         <li>@Html.ActionLink("Registrera", "Register", "Account")</li>
-        <li>@Html.ActionLink("Logga in", "Login", "Account")</li>
-        <li>@Html.ActionLink("Admin", "Index", "Admin")</li>
-        <li>@Html.ActionLink("Logga ut", "Logout", "Account")</li>
-        <li>@Html.ActionLink("Lag", "Index", "Team")</li>
-        <li>@Html.ActionLink("Skapa Lag", "Create", "Team")</li>
+        <li>@Html.ActionLink("Logga in", "Login", "Account")</li>        
+        @if(User.Identity.IsAuthenticated)
+        {
+            <li>@Html.ActionLink("Admin", "Index", "Admin")</li>
+            <li>@Html.ActionLink("Logga ut", "Logout", "Account")</li>
+            <li>@Html.ActionLink("Mina Lag", "Index", "Team")</li>
+            <li>@Html.ActionLink("Skapa Lag", "Create", "Team")</li>
+        }
     </ul>
     
     <div>

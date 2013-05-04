@@ -40,6 +40,11 @@ namespace StatCoach.Data
             }).FirstOrDefault();
         }
 
+        public UserModel GetUserByName(string name)
+        {
+
+        }
+
         public IEnumerable<UserModel> GetAllUsers()
         {
             return this.db.Users.Select(u => new UserModel

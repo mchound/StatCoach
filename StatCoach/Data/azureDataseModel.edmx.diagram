@@ -5,16 +5,19 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="e531d7d432b44f94aa64abd77b109b13" Name="Diagram1" ZoomLevel="82">
-        <EntityTypeShape EntityType="dbStatCoachModel1.Club" Width="1.5" PointX="5.5" PointY="0.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="dbStatCoachModel1.Club" Width="1.5" PointX="5.5" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="dbStatCoachModel1.User" Width="1.5" PointX="3" PointY="0.875" IsExpanded="true" />
         <EntityTypeShape EntityType="dbStatCoachModel1.webpages_Membership" Width="1.5" PointX="0.75" PointY="4.75" IsExpanded="true" />
         <EntityTypeShape EntityType="dbStatCoachModel1.webpages_OAuthMembership" Width="1.5" PointX="2.75" PointY="4.75" IsExpanded="true" />
         <EntityTypeShape EntityType="dbStatCoachModel1.webpages_Roles" Width="1.5" PointX="0.75" PointY="1.25" IsExpanded="true" />
         <AssociationConnector Association="dbStatCoachModel1.FK_Clubs_Users" ManuallyRouted="false" />
         <AssociationConnector Association="dbStatCoachModel1.webpages_UsersInRoles" ManuallyRouted="false" />
-        <EntityTypeShape EntityType="dbStatCoachModel1.Team" Width="1.5" PointX="5.5" PointY="2.875" />
+        <EntityTypeShape EntityType="dbStatCoachModel1.Team" Width="1.5" PointX="8.625" PointY="2.75" />
         <AssociationConnector Association="dbStatCoachModel1.FK_Teams_Users" />
         <EntityTypeShape EntityType="dbStatCoachModel1.ContentRight" Width="1.5" PointX="4.75" PointY="5.25" />
+        <AssociationConnector Association="dbStatCoachModel1.FK_Teams_Clubs" />
+        <EntityTypeShape EntityType="dbStatCoachModel1.Routes" Width="1.5" PointX="8.375" PointY="6" />
+        <AssociationConnector Association="dbStatCoachModel1.FK_Routes_Clubs1" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

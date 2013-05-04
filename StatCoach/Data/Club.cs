@@ -14,10 +14,18 @@ namespace StatCoach.Data
     
     public partial class Club
     {
+        public Club()
+        {
+            this.Teams = new HashSet<Team>();
+            this.Routes = new HashSet<Routes>();
+        }
+    
         public System.Guid Id { get; set; }
         public string Name { get; set; }
         public Nullable<int> CreatedByUserId { get; set; }
     
         public virtual User User { get; set; }
+        public virtual ICollection<Team> Teams { get; set; }
+        public virtual ICollection<Routes> Routes { get; set; }
     }
 }

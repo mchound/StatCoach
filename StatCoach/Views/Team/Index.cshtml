@@ -1,33 +1,8 @@
-﻿@model IEnumerable<StatCoach.Models.TeamModel>
+﻿@model StatCoach.Models.TeamModel
+
 @{
     ViewBag.Title = "Index";
 }
 
-<table border="1">
-    <thead>
-        <tr>
-            <th>Id</th>
-            <th>Namn</th>
-            <th>Skapat av</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (StatCoach.Models.TeamModel team in Model)
-        {
-            <tr>
-                <td>
-                    @team.Id
-                </td>
-                <td>
-                    @team.Name
-                </td>
-                <td>
-                    @team.CreatedByUserId
-                </td>
-                <td>
-                    @Html.ActionLink("Ta bort", "Delete", new { teamId = team.Id})
-                </td>
-            </tr>
-        }        
-    </tbody>
-</table>
+<h2>@Model.Name</h2>
+

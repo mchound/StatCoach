@@ -9,11 +9,11 @@ using StatCoach.Models;
 
 namespace StatCoach.Controllers
 {
-    public class TeamController : Controller
+    public class TeamController : BaseController
     {
         public ActionResult Index()
         {
-            List<TeamModel> model = this.CreateModel();
+            TeamModel model = this._content as TeamModel;
             return View(model);
         }
 

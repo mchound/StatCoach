@@ -1,1 +1,12 @@
-﻿<h2>@ViewBag.Title</h2>
+﻿@using StatCoach.Models;
+@model IEnumerable<TeamModel>
+<h2>@ViewBag.Title</h2>
+
+<ul>
+    @foreach (TeamModel team in Model)
+    {
+        <li>@team.Name</li>
+    }
+</ul>
+
+

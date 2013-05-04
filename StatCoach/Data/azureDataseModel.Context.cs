@@ -32,5 +32,6 @@ namespace StatCoach.Data
         public DbSet<webpages_Roles> webpages_Roles { get; set; }
         public DbSet<Team> Teams { get; set; }
         public DbSet<ContentRight> ContentRights { get; set; }
+        public DbSet<Routes> Routes1 { get; set; }
     }
 }

@@ -8,6 +8,7 @@
         <EntityContainer Name="dbStatCoachModel1StoreContainer">
           <EntitySet Name="Clubs" EntityType="dbStatCoachModel1.Store.Clubs" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="ContentRights" EntityType="dbStatCoachModel1.Store.ContentRights" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Routes" EntityType="dbStatCoachModel1.Store.Routes" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Teams" EntityType="dbStatCoachModel1.Store.Teams" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Users" EntityType="dbStatCoachModel1.Store.Users" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="webpages_Membership" EntityType="dbStatCoachModel1.Store.webpages_Membership" store:Type="Tables" Schema="dbo" />
@@ -21,6 +22,14 @@
           <AssociationSet Name="fk_RoleId" Association="dbStatCoachModel1.Store.fk_RoleId">
             <End Role="webpages_Roles" EntitySet="webpages_Roles" />
             <End Role="webpages_UsersInRoles" EntitySet="webpages_UsersInRoles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Routes_Clubs" Association="dbStatCoachModel1.Store.FK_Routes_Clubs">
+            <End Role="Clubs" EntitySet="Clubs" />
+            <End Role="Routes" EntitySet="Routes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Teams_Clubs" Association="dbStatCoachModel1.Store.FK_Teams_Clubs">
+            <End Role="Clubs" EntitySet="Clubs" />
+            <End Role="Teams" EntitySet="Teams" />
           </AssociationSet>
           <AssociationSet Name="FK_Teams_Users" Association="dbStatCoachModel1.Store.FK_Teams_Users">
             <End Role="Users" EntitySet="Users" />
@@ -49,11 +58,22 @@
           <Property Name="RoleId" Type="int" Nullable="false" />
           <Property Name="Level" Type="int" Nullable="false" />
         </EntityType>
+        <EntityType Name="Routes">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="ContentId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="ClubId" Type="uniqueidentifier" />
+          <Property Name="URL" Type="nvarchar" Nullable="false" MaxLength="256" />
+          <Property Name="Type" Type="int" />
+        </EntityType>
         <EntityType Name="Teams">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="ClubId" Type="uniqueidentifier" Nullable="false" />
           <Property Name="Name" Type="nchar" Nullable="false" MaxLength="50" />
           <Property Name="CreatedByUserId" Type="int" />
           <Property Name="RootRoleName" Type="nvarchar" MaxLength="256" />
@@ -137,6 +157,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Routes_Clubs">
+          <End Role="Clubs" Type="dbStatCoachModel1.Store.Clubs" Multiplicity="0..1" />
+          <End Role="Routes" Type="dbStatCoachModel1.Store.Routes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Clubs">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Routes">
+              <PropertyRef Name="ClubId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Teams_Clubs">
+          <End Role="Clubs" Type="dbStatCoachModel1.Store.Clubs" Multiplicity="1" />
+          <End Role="Teams" Type="dbStatCoachModel1.Store.Teams" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Clubs">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Teams">
+              <PropertyRef Name="ClubId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Teams_Users">
           <End Role="Users" Type="dbStatCoachModel1.Store.Users" Multiplicity="0..1" />
           <End Role="Teams" Type="dbStatCoachModel1.Store.Teams" Multiplicity="*" />
@@ -185,6 +229,15 @@
             <End Role="Team" EntitySet="Teams" />
           </AssociationSet>
           <EntitySet Name="ContentRights" EntityType="dbStatCoachModel1.ContentRight" />
+          <AssociationSet Name="FK_Teams_Clubs" Association="dbStatCoachModel1.FK_Teams_Clubs">
+            <End Role="Club" EntitySet="Clubs" />
+            <End Role="Team" EntitySet="Teams" />
+          </AssociationSet>
+          <EntitySet Name="Routes1" EntityType="dbStatCoachModel1.Routes" />
+          <AssociationSet Name="FK_Routes_Clubs1" Association="dbStatCoachModel1.FK_Routes_Clubs1">
+            <End Role="Club" EntitySet="Clubs" />
+            <End Role="Route" EntitySet="Routes1" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Club">
           <Key>
@@ -194,6 +247,8 @@
           <Property Name="Name" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
           <Property Name="CreatedByUserId" Type="Int32" />
           <NavigationProperty Name="User" Relationship="dbStatCoachModel1.FK_Clubs_Users" FromRole="Clubs" ToRole="Users" />
+          <NavigationProperty Name="Teams" Relationship="dbStatCoachModel1.FK_Teams_Clubs" FromRole="Club" ToRole="Team" />
+          <NavigationProperty Name="Routes" Relationship="dbStatCoachModel1.FK_Routes_Clubs1" FromRole="Club" ToRole="Route" />
         </EntityType>
         <EntityType Name="User">
           <Key>
@@ -268,6 +323,8 @@
           <Property Type="Int32" Name="CreatedByUserId" />
           <NavigationProperty Name="User" Relationship="dbStatCoachModel1.FK_Teams_Users" FromRole="Team" ToRole="User" />
           <Property Type="String" Name="RootRoleName" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Type="Guid" Name="ClubId" Nullable="false" />
+          <NavigationProperty Name="Club" Relationship="dbStatCoachModel1.FK_Teams_Clubs" FromRole="Team" ToRole="Club" />
         </EntityType>
         <Association Name="FK_Teams_Users">
           <End Type="dbStatCoachModel1.User" Role="User" Multiplicity="0..1" />
@@ -291,6 +348,41 @@
           <Property Type="Int32" Name="RoleId" Nullable="false" />
           <Property Type="Int32" Name="Level" Nullable="false" />
         </EntityType>
+        <Association Name="FK_Teams_Clubs">
+          <End Type="dbStatCoachModel1.Club" Role="Club" Multiplicity="1" />
+          <End Type="dbStatCoachModel1.Team" Role="Team" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Club">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Team">
+              <PropertyRef Name="ClubId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Routes">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Guid" Name="Id" Nullable="false" />
+          <Property Type="Guid" Name="ClubId" />
+          <Property Type="String" Name="URL" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Type="Int32" Name="Type" />
+          <NavigationProperty Name="Club" Relationship="dbStatCoachModel1.FK_Routes_Clubs1" FromRole="Route" ToRole="Club" />
+          <Property Type="Guid" Name="ContentId" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Routes_Clubs1">
+          <End Type="dbStatCoachModel1.Club" Role="Club" Multiplicity="0..1" />
+          <End Type="dbStatCoachModel1.Routes" Role="Route" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Club">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Route">
+              <PropertyRef Name="ClubId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -362,6 +454,7 @@
           <EntitySetMapping Name="Teams">
             <EntityTypeMapping TypeName="dbStatCoachModel1.Team">
               <MappingFragment StoreEntitySet="Teams">
+                <ScalarProperty Name="ClubId" ColumnName="ClubId" />
                 <ScalarProperty Name="RootRoleName" ColumnName="RootRoleName" />
                 <ScalarProperty Name="CreatedByUserId" ColumnName="CreatedByUserId" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
@@ -377,6 +470,17 @@
                 <ScalarProperty Name="RoleId" ColumnName="RoleId" />
                 <ScalarProperty Name="Type" ColumnName="Type" />
                 <ScalarProperty Name="ContentId" ColumnName="ContentId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Routes1">
+            <EntityTypeMapping TypeName="dbStatCoachModel1.Routes">
+              <MappingFragment StoreEntitySet="Routes">
+                <ScalarProperty Name="ContentId" ColumnName="ContentId" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="URL" ColumnName="URL" />
+                <ScalarProperty Name="ClubId" ColumnName="ClubId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

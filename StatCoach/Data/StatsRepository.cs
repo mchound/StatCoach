@@ -7,6 +7,8 @@ using System.Web.Security;
 using WebMatrix.WebData;
 using System.Web.Mvc;
 using StatCoach.Business.Enums;
+using StatCoach.Business.Extensions;
+using StatCoach.Business.Interfaces;
 
 namespace StatCoach.Data
 {
@@ -21,6 +23,16 @@ namespace StatCoach.Data
             this.cache = new System.Web.Caching.Cache();
         }
 
+        public List<Club> GetClubs()
+        {
+            if (HttpContext.Current.Cache["AllClubs"] == null)
+            {
+                HttpContext.Current.Cache["AllClubs"] = this.db.Clubs.ToList();
+            }
+
+            return (List<Club>)HttpContext.Current.Cache["AllClubs"];            
+        }
+
         public List<SelectListItem> GetClubListItems()
         {
             if (HttpContext.Current.Cache["ClucListItems"] == null)
@@ -33,6 +45,22 @@ namespace StatCoach.Data
             }
 
             return (List<SelectListItem>)HttpContext.Current.Cache["ClucListItems"];
+        }
+
+        public Club GetClubBySEOName(string ClubSEOName)
+        {
+            string clubName = ClubSEOName.FromSEO();
+            return this.db.Clubs.FirstOrDefault(c => c.Name.ToLower() == clubName.ToLower());
+        }
+
+        public List<TeamModel> GetTeamsByClubId(Guid clubId)
+        {
+            return this.db.Teams.Where(t => t.ClubId == clubId).Select(t => new TeamModel
+            {
+                Id = t.Id,
+                CreatedByUserId = t.CreatedByUserId,
+                Name = t.Name
+            }).ToList();
         }
 
         public List<TeamModel> GetTeamsByCurrentUser()
@@ -57,6 +85,39 @@ namespace StatCoach.Data
                 });
 
             return teams.ToList();
+        }
+
+        public TeamModel GetTeamById(Guid teamId)
+        {
+            return this.db.Teams.Where(t => t.Id == teamId).Select(t => new TeamModel
+            {
+                CreatedByUserId = t.CreatedByUserId,
+                Id = t.Id,
+                Name = t.Name,
+                ContentRights = db.ContentRights.Where(cr => cr.ContentId == t.Id)
+            }).FirstOrDefault();
+        }
+
+        public IContent GetContentFromRoute(Guid clubId, string urlName)
+        {
+            Routes route = this.db.Routes1.FirstOrDefault(r => r.ClubId == clubId && r.URL.ToLower() == urlName);
+
+            IContent content = null;
+            switch ((ContentType)route.Type)
+            {
+                case ContentType.Club:
+                    break;
+                case ContentType.Team:
+                    content = this.GetTeamById(route.ContentId);
+                    content.Type = (ContentType)route.Type;
+                    break;
+                case ContentType.Player:
+                    break;
+                default:
+                    break;
+            }
+
+            return content;
         }
 
         public CRUDStatus CreateTeam(string teamName)

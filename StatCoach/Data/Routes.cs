@@ -12,15 +12,14 @@ namespace StatCoach.Data
     using System;
     using System.Collections.Generic;
     
-    public partial class Team
+    public partial class Routes
     {
         public System.Guid Id { get; set; }
-        public string Name { get; set; }
-        public Nullable<int> CreatedByUserId { get; set; }
-        public string RootRoleName { get; set; }
-        public System.Guid ClubId { get; set; }
+        public Nullable<System.Guid> ClubId { get; set; }
+        public string URL { get; set; }
+        public Nullable<int> Type { get; set; }
+        public System.Guid ContentId { get; set; }
     
-        public virtual User User { get; set; }
         public virtual Club Club { get; set; }
     }
 }

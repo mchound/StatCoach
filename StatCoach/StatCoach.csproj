@@ -121,9 +121,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Business\Attributes\EmailAttribute.cs" />
-    <Compile Include="Business\Enums\CRUDStatus.cs" />
+    <Compile Include="Business\Enums\Enums.cs" />
+    <Compile Include="Business\Extensions\Extensions.cs" />
+    <Compile Include="Business\Interfaces\IContent.cs" />
+    <Compile Include="Business\RequestData.cs" />
+    <Compile Include="Business\RouteConstraints\ClubRouteConstraint.cs" />
+    <Compile Include="Business\RouteHandlers\ApplicationRouteHandler.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
+    <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\ClubController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\TeamController.cs" />
@@ -146,6 +152,9 @@
       <DependentUpon>azureDataseModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Data\ContentRight.cs">
+      <DependentUpon>azureDataseModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\Routes.cs">
       <DependentUpon>azureDataseModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Data\StatsRepository.cs" />
@@ -249,13 +258,16 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Team\Index.cshtml" />
+    <Content Include="Views\Team\TeamsForUser.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Team\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Club\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Team\Index.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

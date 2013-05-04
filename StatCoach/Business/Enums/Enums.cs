@@ -15,4 +15,11 @@ namespace StatCoach.Business.Enums
         EntityNotFound = 5,
         AccessRightsError = 6
     }
+
+    public enum ContentType
+    {
+        Club = 0,
+        Team = 1,
+        Player = 2
+    }
 }
