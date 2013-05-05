@@ -21,7 +21,7 @@ namespace StatCoach.Models
 
         public ContentType Type { get; set; }
 
-        public IEnumerable<ContentRight> ContentRights { get; set; } 
-        
+        public IEnumerable<ContentRight> ContentRights { get; set; }
+
     }
 }

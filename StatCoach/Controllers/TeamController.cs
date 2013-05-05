@@ -52,11 +52,10 @@ namespace StatCoach.Controllers
             }
             else
             {
-               ModelState.AddModelError("", "No team selected");
+                ModelState.AddModelError("", "No team selected");
             }
-
-            return View("~/Views/Team/Index.cshtml", this.CreateModel());
             
+            return View("~/Views/Team/Index.cshtml", this.CreateModel());
         }
 
         private List<TeamModel> CreateModel()

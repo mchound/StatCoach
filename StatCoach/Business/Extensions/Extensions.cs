@@ -1,4 +1,5 @@
 ﻿using StatCoach.Business.Interfaces;
+using StatCoach.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,8 +30,12 @@ namespace StatCoach.Business.Extensions
             if(!WebSecurity.IsAuthenticated)
                 return false;
 
-            int userId = WebSecurity.CurrentUserId;
-            Roles.GetRolesForUser(WebSecurity.CurrentUserName);
+            using (UserRepository users = new UserRepository())
+            {
+                return users.UserIsAuthorized(content);
+            }
+
+            return false;
             
         }
     }

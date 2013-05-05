@@ -58,5 +58,5 @@ namespace StatCoach.Models
         [DataType(DataType.Password)]
         [Display(Name = "Lösenord")]
         public string Password { get; set; }
-    }
+    }    
 }

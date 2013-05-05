@@ -1,4 +1,5 @@
-﻿using StatCoach.Models;
+﻿using StatCoach.Business.Interfaces;
+using StatCoach.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,11 +39,6 @@ namespace StatCoach.Data
                 FirstName = u.FirstName,
                 LastName = u.LastName
             }).FirstOrDefault();
-        }
-
-        public UserModel GetUserByName(string name)
-        {
-
         }
 
         public IEnumerable<UserModel> GetAllUsers()
@@ -168,6 +164,23 @@ namespace StatCoach.Data
         public int[] GetRoleIdsForUser(int userId)
         {
             return db.Users.FirstOrDefault(u => u.Id == userId).webpages_Roles.Select(r => r.RoleId).ToArray();
+        }
+
+        public bool UserIsAuthorized(IContent content)
+        {
+            if (!WebSecurity.IsAuthenticated)
+                return false;
+
+            int userId = WebSecurity.CurrentUserId;
+            IEnumerable<int> roleIds;
+
+            using (UserRepository users = new UserRepository())
+            {
+                roleIds = users.GetRoleIdsForUser(userId).AsEnumerable();
+            }
+
+            return content.ContentRights.Any(r => (r.Type == 1 && roleIds.Contains(r.RoleId)) || (r.Type == 2 && r.RoleId == userId));
+
         }
 
         public void Dispose()

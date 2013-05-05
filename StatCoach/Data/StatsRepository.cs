@@ -102,6 +102,9 @@ namespace StatCoach.Data
         {
             Routes route = this.db.Routes1.FirstOrDefault(r => r.ClubId == clubId && r.URL.ToLower() == urlName);
 
+            if (route == null)
+                return null;
+
             IContent content = null;
             switch ((ContentType)route.Type)
             {
