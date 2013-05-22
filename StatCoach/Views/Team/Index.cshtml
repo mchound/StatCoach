@@ -1,5 +1,6 @@
 ﻿@using StatCoach.Models;
 @using StatCoach.Business.Extensions;
+@using StatCoach.Helpers;
 @model TeamModel
 
 @{
@@ -10,19 +11,12 @@
 
 @if (Html.UserIsAuthorized(Model))
 {
-    @Html.ActionLink("Ta bort lag", "Delete", new {teamId = Model.Id.ToString() })
-    RouteValueDictionary dic = new RouteValueDictionary(new {
-        club = ViewContext.RouteData.Values["club"],
-        content = ViewContext.RouteData.Values["content"],
-        controller = "Team",
-        action = "Delete",
-        teamId = Model.Id.ToString()
-    });
-    <br />
-    @Html.ActionLink("Ta bort", "Delete", dic)
+    @Html.ContentAction("Delete", "Ta bort", new {teamId = Model.Id })
     
 }
 else
 {
     <b>Denna användare får <u>inte</u> ta bort detta laget</b>
 }
+
+@Html.ValidationSummary()

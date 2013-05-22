@@ -17,7 +17,7 @@ namespace StatCoach.Controllers
         {
             if (!WebSecurity.Initialized)
             {
-                WebSecurity.InitializeDatabaseConnection("defaultConnection", "Users", "Id", "Email", true);
+                WebSecurity.InitializeDatabaseConnection("azureConnection", "Users", "Id", "Email", true);
             }
 
             RegisterModel model;
@@ -29,7 +29,7 @@ namespace StatCoach.Controllers
                     Clubs = db.GetClubListItems().ToList()
                 };
             }
-
+            
             return View(model);
         }
 

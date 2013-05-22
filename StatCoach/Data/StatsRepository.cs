@@ -35,16 +35,31 @@ namespace StatCoach.Data
 
         public List<SelectListItem> GetClubListItems()
         {
-            if (HttpContext.Current.Cache["ClucListItems"] == null)
+            var result = new List<SelectListItem>();
+
+            if (HttpContext.Current != null && HttpContext.Current.Cache["ClucListItems"] == null)
             {
-                HttpContext.Current.Cache["ClucListItems"] = this.db.Clubs.AsEnumerable<Club>().Select(c => new SelectListItem
+                HttpContext.Current.Cache["ClucListItems"] = result = this.db.Clubs.AsEnumerable<Club>().Select(c => new SelectListItem
                 {
                     Text = c.Name,
                     Value = c.Id.ToString()
                 }).ToList<SelectListItem>();                
             }
+            // This one is for texsting
+            else if (HttpContext.Current != null && HttpContext.Current.Cache["ClucListItems"] != null)
+            {
+                result = (List<SelectListItem>)HttpContext.Current.Cache["ClucListItems"];
+            }
+            else
+            {
+                result = this.db.Clubs.AsEnumerable<Club>().Select(c => new SelectListItem
+                {
+                    Text = c.Name,
+                    Value = c.Id.ToString()
+                }).ToList<SelectListItem>();
+            }
 
-            return (List<SelectListItem>)HttpContext.Current.Cache["ClucListItems"];
+            return result;
         }
 
         public Club GetClubBySEOName(string ClubSEOName)
@@ -177,10 +192,16 @@ namespace StatCoach.Data
         {
             Guid _teamId = Guid.Parse(teamId);
             Team team = db.Teams.FirstOrDefault(t => t.Id == _teamId);
+            Routes route = db.Routes1.FirstOrDefault(r => r.ContentId == team.Id);
+
             if (team == null)
                 return CRUDStatus.EntityNotFound;
 
             UserRepository users = new UserRepository();
+
+            // Delete users from roles
+            string[] usersInRole = Roles.GetUsersInRole(team.Name);
+            Roles.RemoveUsersFromRole(usersInRole, team.Name);
 
             // Delete root role for team
             if (!users.DeleteRole(team.Name))
@@ -192,6 +213,9 @@ namespace StatCoach.Data
 
             try
             {
+                if(route != null)
+                    db.Routes1.Remove(route);
+
                 db.Teams.Remove(team);
                 db.SaveChanges();
             }

@@ -4,6 +4,7 @@ using StatCoach.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
@@ -32,12 +33,25 @@ namespace StatCoach.Business.RouteHandlers
             {
                 Club club = RequestData.Club = this._statsRepository.GetClubBySEOName(clubName);
 
+                if (club == null)
+                {
+                    requestContext.HttpContext.Response.StatusCode = (int)HttpStatusCode.NotFound;
+                    requestContext.HttpContext.Response.End();
+                }
+
+                ReqData<string>.Set("clubRoute", clubName);
                 if (contentName != string.Empty)
                 {
                     content = RequestData.Content = this._statsRepository.GetContentFromRoute(club.Id, contentName);
+                    if(content == null)
+                    {
+                        requestContext.HttpContext.Response.StatusCode = (int)HttpStatusCode.NotFound;
+                        requestContext.HttpContext.Response.End();
+                    }
+                    ReqData<string>.Set("contentRoute", contentName);
                 }
             }
-
+            
             if (content != null && controllerName == "Club" && actionName == "Index")
             {
                 switch ((ContentType)content.Type)

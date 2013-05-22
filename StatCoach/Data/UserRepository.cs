@@ -151,7 +151,7 @@ namespace StatCoach.Data
         {
             try
             {
-                this.db.Database.ExecuteSqlCommand("DELETE FROM ContentRights WHERE id = {0}", contentGuid.ToString());
+                this.db.Database.ExecuteSqlCommand("DELETE FROM ContentRights WHERE ContentId = {0}", contentGuid.ToString());
                 return true;
             }
             catch (Exception ex)

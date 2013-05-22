@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using StatCoach.Business.Enums;
 using StatCoach.Data;
 using StatCoach.Models;
+using StatCoach.Business;
 
 namespace StatCoach.Controllers
 {
@@ -42,10 +43,9 @@ namespace StatCoach.Controllers
 
         public ActionResult Delete(string teamId)
         {
-            StatsRepository db = new StatsRepository();
             if (!string.IsNullOrWhiteSpace(teamId))
             {
-                if (db.DeleteTeam(teamId) == CRUDStatus.Success)
+                if (this._statsRepository.DeleteTeam(teamId) == CRUDStatus.Success)
                     return RedirectToAction("Index");
 
                 ModelState.AddModelError("", "Error when trying to delete team");
@@ -54,8 +54,17 @@ namespace StatCoach.Controllers
             {
                 ModelState.AddModelError("", "No team selected");
             }
-            
-            return View("~/Views/Team/Index.cshtml", this.CreateModel());
+
+            object routeValues = new 
+            { 
+                club = ReqData<string>.Get("clubRoute"),
+                content = ReqData<string>.Get("contentRoute"),
+                controller = string.Empty,
+                action = string.Empty
+            };
+
+            TeamModel model = this._content as TeamModel;
+            return View("~/Views/Team/Index.cshtml", model);
         }
 
         private List<TeamModel> CreateModel()

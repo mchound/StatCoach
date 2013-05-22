@@ -16,7 +16,7 @@ namespace StatCoach
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
             routes.MapRoute(
-                name: "DynamicEntity",
+                name: "Content",
                 url: "{club}/{content}/{controller}/{action}/{id}",
                 defaults: new { controller = "Club", action = "Index", id = UrlParameter.Optional },
                 constraints: new { isClub = new ClubRouteConstraint() }
